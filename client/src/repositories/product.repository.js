@@ -1,4 +1,3 @@
-// src/repositories/product.repository.js
 const db = require("../database/index.db");
 
 exports.getAll = async () => {

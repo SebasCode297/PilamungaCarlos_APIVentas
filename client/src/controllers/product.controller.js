@@ -1,4 +1,3 @@
-// src/controllers/product.controller.js
 const service = require('../services/product.service');
 
 exports.getProducts = async (req, res) => {

@@ -1,4 +1,3 @@
-// src/services/product.service.js
 const repo = require('../repositories/product.repository');
 
 exports.getAll = () => repo.getAll();
@@ -29,7 +28,7 @@ exports.create = (product) => {
 };
 
 exports.update = (id, data) => {
-    // Aquí CORRIGO: antes usabas product.stock, ahora uso data.stock
+   
     if (data.stock < 0) throw new Error("El stock del producto no puede ser negativo");
     if (data.precio <= 0) throw new Error("El precio del producto debe ser mayor a cero");
 
