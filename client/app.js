@@ -11,3 +11,4 @@ app.use('/api/products', productRoutes);
 app.listen(3000, () => {
     console.log('Servidor en http://localhost:3000');
 });
+//  http://localhost:3000/api/products
