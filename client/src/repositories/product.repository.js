@@ -33,3 +33,17 @@ exports.delete = async (id) => {
     );
     return result.rows[0];
 };
+
+// Verificar si existe un producto con el mismo nombre (excluyendo el ID actual)
+exports.existsByName = async (nombre, excludeId = null) => {
+    let query = "SELECT * FROM productos WHERE LOWER(nombre) = LOWER($1)";
+    let params = [nombre];
+    
+    if (excludeId) {
+        query += " AND id != $2";
+        params.push(excludeId);
+    }
+    
+    const result = await db.query(query, params);
+    return result.rows.length > 0;
+};

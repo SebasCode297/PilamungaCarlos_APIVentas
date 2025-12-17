@@ -34,6 +34,34 @@ exports.delete = async (id) => {
     return result.rows[0];
 };
 
+// Verificar si existe un usuario con la misma cédula (excluyendo el ID actual)
+exports.existsByCedula = async (cedula, excludeId = null) => {
+    let query = "SELECT * FROM usuarios WHERE cedula = $1";
+    let params = [cedula];
+    
+    if (excludeId) {
+        query += " AND id_usuario != $2";
+        params.push(excludeId);
+    }
+    
+    const result = await db.query(query, params);
+    return result.rows.length > 0;
+};
+
+// Verificar si existe un usuario con el mismo correo (excluyendo el ID actual)
+exports.existsByCorreo = async (correo, excludeId = null) => {
+    let query = "SELECT * FROM usuarios WHERE correo = $1";
+    let params = [correo];
+    
+    if (excludeId) {
+        query += " AND id_usuario != $2";
+        params.push(excludeId);
+    }
+    
+    const result = await db.query(query, params);
+    return result.rows.length > 0;
+};
+
 // {
 //   "cedula": "1234567890",
 //   "nombre": "Juan Pérez",

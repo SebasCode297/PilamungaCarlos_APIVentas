@@ -29,6 +29,10 @@ exports.updateUser = async (req, res) =>{
 };
 
 exports.deleteUser = async (req, res) => {
-    const result = await service.delete(req.params.id)
-    res.json(result)
+    try {
+        const result = await service.delete(req.params.id);
+        res.json(result);
+    } catch (err) {
+        res.status(400).json({ error: err.message});
+    }
 }

@@ -29,6 +29,10 @@ exports.updateProduct = async (req, res) => {
 };
 
 exports.deleteProduct = async (req, res) => {
-    const result = await service.delete(req.params.id);
-    res.json(result);
+    try {
+        const result = await service.delete(req.params.id);
+        res.json(result);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
 };

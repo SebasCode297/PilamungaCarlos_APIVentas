@@ -40,6 +40,25 @@ class ProductClient {
         const product = await this.validateProduct(id_producto);
         return parseFloat(product.precio);
     }
+
+    /**
+     * Obtiene el stock de un producto
+     * @param {number} id_producto - ID del producto
+     * @returns {Promise<number>} - Stock del producto
+     */
+    static async getProductStock(id_producto) {
+        const product = await this.validateProduct(id_producto);
+        return parseInt(product.stock);
+    }
+
+    /**
+     * Obtiene todos los datos de un producto
+     * @param {number} id_producto - ID del producto
+     * @returns {Promise<Object>} - Datos completos del producto
+     */
+    static async getProduct(id_producto) {
+        return await this.validateProduct(id_producto);
+    }
 }
 
 module.exports = ProductClient;
