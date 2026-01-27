@@ -12,3 +12,4 @@ app.listen(3001, () => {
     console.log('Servidor en http://localhost:3001');
 });
 //http://localhost:3001/api/users
+// http://user_service:3001/api/users

@@ -1,0 +1,102 @@
+# services:
+
+# # full dependencias dentro de docker 
+
+# db: 
+# # aqui van lo que bamosa  trabajar con docker , nombre desde cero , userr, contra y db , porque pg se le añade a docker
+#   image: postgres:15
+#   container_name: pilamunga_db
+#   restart: always
+#   environment:
+#     POSTGRES_USER: Pilamunga_Carlos
+#     POSTGRES_PASSWORD: 1234
+#     POSTGRES_DB: micro_pilamunga_db
+
+#   # se le puede poner los predeterinado 
+#   ports:
+#     - "5433:5433"
+#   volumes:
+#     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+# client:
+#   build:
+#     context: .
+#     dockerfile: client/Dockerfile
+#   container_name: pilamunga_client
+
+services:
+
+  # full dependencias dentro de docker 
+
+  db:
+    # aqui van lo que bamosa  trabajar con docker , nombre desde cero , userr, contra y db , porque pg se le añade a docker
+    image: postgres:15
+    container_name: pilamunga_db
+    restart: always
+    environment:
+      POSTGRES_USER: Pilamunga_Carlos
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: micro_pilamunga_db
+
+    # se le puede poner los predeterinado 
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: pilamunga_client
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: Pilamunga_Carlos
+      DB_PASSWORD: 1234
+      DB_DATABASE: micro_pilamunga_db
+      PORT: 3000
+    depends_on:
+      - db
+  order_service:
+    build:
+      context: .
+      dockerfile: order_service/Dockerfile
+    container_name: pilamunga_order_service
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: Pilamunga_Carlos
+      DB_PASSWORD: 1234
+      DB_DATABASE: micro_pilamunga_db
+      PORT: 3002
+      USER_MICROSERVICE_URL: http://user_service:3001/api/users
+      PRODUCT_MICROSERVICE_URL: http://product_service:3000/api/products
+    depends_on:
+      - db
+  # los puertos se utilizan ya de docker que vendira sinedo 5432 no importa el pg admin
+  user_service:
+    build:
+      context: .
+      dockerfile: user_service/Dockerfile
+    container_name: pilamunga_user_service
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: Pilamunga_Carlos
+      DB_PASSWORD: 1234
+      DB_DATABASE: micro_pilamunga_db
+      PORT: 3001
+    depends_on:
+      - db
+      
